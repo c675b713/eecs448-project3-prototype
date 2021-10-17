@@ -16,4 +16,5 @@ Game
 	- When in check the player must either move the king out of check, block the king from the piece(s) putting the king in check, or capture the piece(s) putting the king in check
 	- The game ends when one player's king is in checkmate
 	- Pawns are able to promote when they reach opposite side of the board
+	- Pawns are able to captures pieces using en passant
 	- Players are able to castle properly with their king and rook
