@@ -4,12 +4,12 @@ UI
 	- Each chess piece (pawn, rook, knight, bishop, queen, king) are placed properly at the beginning of the game
 	- Each piece has its own icon and color (white, black) is coordinated with what side it is playing on
 	- The game board switches view depending on which player's turn it is
-	- There is a module displaying which pieces have been captured ??
+	- There is a module displaying which pieces have been captured 
 
 Game
 	
 	- Two players can play against each other
-	- Players can click and drag to move pieces ??
+	- Players can click and drag to move pieces 
 	- All pieces are able to make any legal move with any of their pieces
 	- The other player's pieces may be captured
 	- The player is notified when their king is in check 
