@@ -8,7 +8,7 @@ export const loadPieces = {
     loadPieces() {
         const gameSetup = gameConfig.useInitGame ? initialPlace : potentGame
         this.placePieces()
-        this.placeInPosition(gameSetup)
+        //this.placeInPosition(gameSetup)
 
     },
     placePieces(){
