@@ -6,7 +6,6 @@ class GameBoard{
         this.GameBoard = [];
         this.establishGameButtons();
         this.setUpPieces();
-        this.movePiece(this.GameBoard[0][0], this.GameBoard[2][2]);
         this.whiteCapturedPieces = [];
         this.blackCapturedPieces = [];
         this.startTurn('white');
@@ -16,8 +15,9 @@ class GameBoard{
     establishGameButtons(){
         //takes the buttons from the index.html and puts them into an 8x8 array
         //The bottom left corner is [0][0], that is why we have to do weird stuff with the bounds of the for loops.
+        //SOMEONE NEEDS TO GO TO INDEX.HTML AND FLIP ALL THE COLORS, THEY ARE WRONG
         var tempArray = [];
-        for(var i =8; i>=1; i--){
+        for(var i =1; i<=8; i++){
             for(var j=0; j<8;j++){
                 tempArray.push(document.getElementById(this.numbersToLetters(j)+i));
                 //alert(this.numbersToLetters(j)+i);
