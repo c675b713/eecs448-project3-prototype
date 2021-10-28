@@ -1,15 +1,19 @@
 //import {GamePiece} from '/GameClasses/GamePiece.js'
+//That line does nothing since it is actually included in index.html, but I am an idiot and want to specify that it is included here
 class GameBoard{
     constructor(_){
+        this.GameButtons = [];
         this.GameBoard = [];
-        this.establishGameBoard();
+        this.MrRook = new GamePiece('white');
+        this.establishGameButtons();
+        this.setUpPieces();
         this.whiteCapturedPieces = [];
         this.blackCapturedPieces = [];
     }
 
-    establishGameBoard(){
+    establishGameButtons(){
         //takes the buttons from the index.html and puts them into an 8x8 array
-        //rows are numbers, columns are letters
+        //The bottom left corner is [0][0], that is why we have to do weird stuff with the bounds of the for loops.
         var tempArray = [];
         for(var i =8; i>=1; i--){
             for(var j=0; j<8;j++){
@@ -17,9 +21,34 @@ class GameBoard{
                 //alert(this.numbersToLetters(j)+i);
                 document.getElementById(this.numbersToLetters(j)+i).disabled = true;
             }
-            this.GameBoard.push(tempArray);
+            this.GameButtons.push(tempArray);
             tempArray = [];
         }
+    }
+
+    setUpPieces(){
+        //populates the GameBoard array with the Starting configuration of Pieces
+        //This could have been done in the constructor, but it is really ugly so I am putting it in its own method
+        var tempArray = [];
+        //1st rank, white's pieces
+        tempArray = [new Rook('white'), new Knight('white'), new Bishop('white'), new Queen('white'), new King('white'), new Bishop('white'), new Knight('white'), new Rook('white')];
+        this.GameBoard.push(tempArray);
+        //second rank, white's pawns
+        tempArray = [new Pawn('white'),new Pawn('white'),new Pawn('white'),new Pawn('white'),new Pawn('white'),new Pawn('white'),new Pawn('white'),new Pawn('white')];
+        this.GameBoard.push(tempArray);
+        
+        //null pieces fill the 3-6 ranks
+        tempArray = [new NullPiece(),new NullPiece(),new NullPiece(),new NullPiece(),new NullPiece(),new NullPiece(),new NullPiece(),new NullPiece(),]
+        for(var i = 3; i<=6; i++){//null pieces fill the 3-6 ranks
+            this.GameBoard.push(tempArray);
+        }
+
+        //seventh rank, black's pawns
+        tempArray = [new Pawn('black'),new Pawn('black'),new Pawn('black'),new Pawn('black'),new Pawn('black'),new Pawn('black'),new Pawn('black'),new Pawn('black')];
+        this.GameBoard.push(tempArray);
+        //eighth rank, black's pieces
+        tempArray = [new Rook('black'), new Knight('black'), new Bishop('black'), new Queen('black'), new King('black'), new Bishop('black'), new Knight('black'), new Rook('black')];
+        this.GameBoard.push(tempArray);
     }
 
     numbersToLetters(number){
@@ -53,6 +82,14 @@ class GameBoard{
         }
     }
 
+    enableButton(square){
+        square.disabled = false;
+    }
+
+    disableButton(square){
+        square.disabled = true;
+    }
+
     movePiece(piece, destination){ //both parameters will be of type piece
         //if neither are true, then the piece is a null piece, so no need to add it to the lists of captured pieces
         if(destination.color == 'black'){
@@ -71,14 +108,3 @@ class GameBoard{
     }
 }
 gameboard = new GameBoard();
-/*
-I am writing this here so I don't forget this tomorrow
-The idea behind this class is that the GameBoard is going to be an 8x8 array of pieces
-Some of the pieces will be the standard pieces you expect (King, Queen, Rook, etc.) but the majority of the spaces will be a "null" piece
-That will represent a blank square, but with the added benefit that we can guarentee that the array only has 1 data type, which is piece
-
-Then the algorithm for moving a piece is very simple: In order to move a piece on square A to square B
-1. The piece on square B gets added to an array of captured pieces (unless the piece is a null piece)
-2. The piece on square B gets changed to whatever the piece on square A currently is
-3. The piece on square A gets changed to a null piece
-*/
