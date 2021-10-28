@@ -4,11 +4,13 @@ class GameBoard{
     constructor(_){
         this.GameButtons = [];
         this.GameBoard = [];
-        this.MrRook = new GamePiece('white');
         this.establishGameButtons();
         this.setUpPieces();
+        this.movePiece(this.GameBoard[0][0], this.GameBoard[2][2]);
         this.whiteCapturedPieces = [];
         this.blackCapturedPieces = [];
+        this.startTurn('white');
+        
     }
 
     establishGameButtons(){
@@ -28,7 +30,6 @@ class GameBoard{
 
     setUpPieces(){
         //populates the GameBoard array with the Starting configuration of Pieces
-        //This could have been done in the constructor, but it is really ugly so I am putting it in its own method
         var tempArray = [];
         //1st rank, white's pieces
         tempArray = [new Rook('white'), new Knight('white'), new Bishop('white'), new Queen('white'), new King('white'), new Bishop('white'), new Knight('white'), new Rook('white')];
@@ -38,8 +39,8 @@ class GameBoard{
         this.GameBoard.push(tempArray);
         
         //null pieces fill the 3-6 ranks
-        tempArray = [new NullPiece(),new NullPiece(),new NullPiece(),new NullPiece(),new NullPiece(),new NullPiece(),new NullPiece(),new NullPiece(),]
         for(var i = 3; i<=6; i++){//null pieces fill the 3-6 ranks
+            tempArray = [new NullPiece(),new NullPiece(),new NullPiece(),new NullPiece(),new NullPiece(),new NullPiece(),new NullPiece(),new NullPiece()];
             this.GameBoard.push(tempArray);
         }
 
@@ -49,6 +50,13 @@ class GameBoard{
         //eighth rank, black's pieces
         tempArray = [new Rook('black'), new Knight('black'), new Bishop('black'), new Queen('black'), new King('black'), new Bishop('black'), new Knight('black'), new Rook('black')];
         this.GameBoard.push(tempArray);
+        
+        //for the move piece algorithm to work, we need every piece to have a location
+        for(var i = 0; i<8; i++){
+            for(var j = 0; j<8; j++){
+                this.GameBoard[i][j].setLocation(i, j);
+            }
+        }
     }
 
     numbersToLetters(number){
@@ -101,10 +109,43 @@ class GameBoard{
 
         this.GameBoard[destination.row][destination.column] = piece;
         //still need to tell the piece that it changed location;
-        this.GameBoard[destination.row][destination.column].row = destination.row;
-        this.GameBoard[destination.row][destination.column].column = destination.column;
+        this.GameBoard[destination.row][destination.column].setLocation(destination.row, destination.column);
         
-        this.GameBoard[piece.row][piece.column] = nullPiece;//will need to change this syntax probably
+        this.GameBoard[piece.row][piece.column] = new NullPiece();//will need to change this syntax probably
+        //after every move, instead of just updating those two pieces icon, we are just going to update the whole board
+        this.reloadBoard();
+    }
+
+    reloadBoard(){
+        //This method will take update the icon of every button in GameButtons based on its corresponding entry in GameBoard
+        for(var i = 0; i<8; i++){
+            for(var j = 0; j<8; j++){
+                if(this.GameBoard[i][j].color == 'white' || this.GameBoard[i][j].color == 'black'){
+                    this.GameButtons[i][j].innerHTML = "<img src="+this.GameBoard[i][j].getImage() + ">";
+                }
+            }
+        }
+    }
+
+    startTurn(color){
+        //enable all the buttons of the current color
+        for(var i = 0; i<8; i++){
+            for(var j = 0; j<8; j++){
+                if(this.GameBoard[i][j].color == color){
+                    this.enableButton(this.GameButtons[i][j]);
+                }
+            }
+        }
+        this.movePiece(this.GameBoard[0][0], this.GameBoard[2][2]);
+        //this.startTurn('black');
+        /*
+        if(color == 'white'){
+            startTurn('black');
+        }
+        else{
+            this.startTurn('white');
+        }
+        */
     }
 }
 gameboard = new GameBoard();
