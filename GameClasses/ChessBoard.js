@@ -9,7 +9,7 @@ class GameBoard{
         this.reloadBoard();
         this.whiteCapturedPieces = [];
         this.blackCapturedPieces = [];
-        this.startTurn('black');
+        this.startTurn('white');
         
     }
 
@@ -59,7 +59,7 @@ class GameBoard{
             }
         }
     }
-
+    //currently this is only used by the setup methods
     numbersToLetters(number){
         switch(number){
             case 0:
@@ -91,8 +91,11 @@ class GameBoard{
         }
     }
 
-    enableButton(square){
-        square.disabled = false;
+    enablePieceButton(square){
+        this.GameButtons[square.row][square.column].disabled = false;
+        this.GameButtons[square.row][square.column].onclick = (() => {
+            this.GameBoard[square.row][square.column].enableValidMovements(this);
+        });
     }
 
     disableButton(square){
@@ -139,22 +142,18 @@ class GameBoard{
 
     startTurn(color){
         //enable all the buttons of the current color
+        var self = this;
         for(var i = 0; i<8; i++){
             for(var j = 0; j<8; j++){
-                if(this.GameBoard[i][j].color == color){
-                    this.enableButton(this.GameButtons[i][j]);
+                if(this.GameBoard[i][j].color == color){//enable all the buttons of the current team's color
+                    this.enablePieceButton(this.GameBoard[i][j]);
+                }
+                else{//disable all other buttons
+                    this.disableButton(this.GameButtons[i][j]);
                 }
             }
         }
-        //this.startTurn('black');
-        /*
-        if(color == 'white'){
-            startTurn('black');
-        }
-        else{
-            this.startTurn('white');
-        }
-        */
+        
     }
 }
 gameboard = new GameBoard();
