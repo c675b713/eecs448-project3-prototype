@@ -6,9 +6,10 @@ class GameBoard{
         this.GameBoard = [];
         this.establishGameButtons();
         this.setUpPieces();
+        this.reloadBoard();
         this.whiteCapturedPieces = [];
         this.blackCapturedPieces = [];
-        this.startTurn('white');
+        this.startTurn('black');
         
     }
 
@@ -106,12 +107,18 @@ class GameBoard{
         else if(destination.color == 'white'){
             this.blackCapturedPieces.push(destination);
         }
+        var originalRow = piece.row;
+        var originalColumn = piece.column;
 
         this.GameBoard[destination.row][destination.column] = piece;
         //still need to tell the piece that it changed location;
-        this.GameBoard[destination.row][destination.column].setLocation(destination.row, destination.column);
         
-        this.GameBoard[piece.row][piece.column] = new NullPiece();//will need to change this syntax probably
+        this.GameBoard[originalRow][originalColumn] = new NullPiece();//will need to change this syntax probably
+        
+        this.GameBoard[destination.row][destination.column].setLocation(destination.row, destination.column);
+
+        this.GameBoard[originalRow][originalColumn].setLocation(originalRow, originalColumn);
+
         //after every move, instead of just updating those two pieces icon, we are just going to update the whole board
         this.reloadBoard();
     }
@@ -122,6 +129,9 @@ class GameBoard{
             for(var j = 0; j<8; j++){
                 if(this.GameBoard[i][j].color == 'white' || this.GameBoard[i][j].color == 'black'){
                     this.GameButtons[i][j].innerHTML = "<img src="+this.GameBoard[i][j].getImage() + ">";
+                }
+                else{
+                    this.GameButtons[i][j].innerHTML = "";
                 }
             }
         }
@@ -136,7 +146,6 @@ class GameBoard{
                 }
             }
         }
-        this.movePiece(this.GameBoard[0][0], this.GameBoard[2][2]);
         //this.startTurn('black');
         /*
         if(color == 'white'){
