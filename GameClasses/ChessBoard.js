@@ -12,9 +12,12 @@ class GameBoard{
         this.startTurn('white');
         
     }
-
+    /**
+     * takes the buttons from the index.html and puts them into an 8x8 array
+     * @function establishGameButtons
+     * @memberof GameBoard
+     */
     establishGameButtons(){
-        //takes the buttons from the index.html and puts them into an 8x8 array
         //The bottom left corner is [0][0], that is why we have to do weird stuff with the bounds of the for loops.
         //SOMEONE NEEDS TO GO TO INDEX.HTML AND FLIP ALL THE COLORS, THEY ARE WRONG
         var tempArray = [];
@@ -29,6 +32,11 @@ class GameBoard{
         }
     }
 
+    /**
+     * populates the GameBoard array with the Starting configuration of Pieces
+     * @function setUpPieces
+     * @memberof GameBoard
+     */
     setUpPieces(){
         //populates the GameBoard array with the Starting configuration of Pieces
         var tempArray = [];
@@ -40,7 +48,7 @@ class GameBoard{
         this.GameBoard.push(tempArray);
         
         //null pieces fill the 3-6 ranks
-        for(var i = 3; i<=6; i++){//null pieces fill the 3-6 ranks
+        for(var i = 3; i<=6; i++){
             tempArray = [new NullPiece(),new NullPiece(),new NullPiece(),new NullPiece(),new NullPiece(),new NullPiece(),new NullPiece(),new NullPiece()];
             this.GameBoard.push(tempArray);
         }
@@ -59,7 +67,12 @@ class GameBoard{
             }
         }
     }
-    //currently this is only used by the setup methods
+    /**
+     * takes a number 0-7 and returns the corresponding letter
+     * @function numbersToLetters
+     * @memberof GameBoard
+     * @param number number to be turned into letter 
+     */
     numbersToLetters(number){
         switch(number){
             case 0:
@@ -90,7 +103,12 @@ class GameBoard{
                 break;
         }
     }
-
+    /**
+     * enables the button corresponding the piece square, then adds an onclick function to allow the piece to move
+     * @function enablePieceButton
+     * @memberof GameBoard
+     * @param square piece that you want to enable
+     */
     enablePieceButton(square){
         this.GameButtons[square.row][square.column].disabled = false;
         this.GameButtons[square.row][square.column].onclick = (() => {
@@ -98,10 +116,23 @@ class GameBoard{
         });
     }
 
-    disableButton(square){
-        square.disabled = true;
+    /**
+     * disables the given button
+     * @function disableButton
+     * @memberof GameBoard
+     * @param button button to be disabled 
+     */
+    disableButton(button){
+        button.disabled = true;
     }
 
+    /**
+     * algorithm to move a piece to another square
+     * @function movePiece
+     * @memberof GameBoard
+     * @param piece the piece that you want to move to destination
+     * @param destination place you want to move the piece to
+     */
     movePiece(piece, destination){ //both parameters will be of type piece
         //if neither are true, then the piece is a null piece, so no need to add it to the lists of captured pieces
         if(destination.color == 'black'){
@@ -126,6 +157,11 @@ class GameBoard{
         this.reloadBoard();
     }
 
+    /**
+     * refreshes the images on all of the buttons to represent the current configuration of GameBoard
+     * @function reloadBoard
+     * @memberof GameBoard
+     */
     reloadBoard(){
         //This method will take update the icon of every button in GameButtons based on its corresponding entry in GameBoard
         for(var i = 0; i<8; i++){
@@ -140,6 +176,12 @@ class GameBoard{
         }
     }
 
+    /**
+     * enables all the pieces of the current player
+     * @function startTurn
+     * @memberof GameBoard
+     * @param color current player, 'white' or 'black' 
+     */
     startTurn(color){
         //enable all the buttons of the current color
         var self = this;

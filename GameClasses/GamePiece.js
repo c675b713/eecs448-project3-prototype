@@ -2,11 +2,25 @@ class GamePiece {
     constructor(color){
         this.color = color;//'white' or 'black'
     }
-    
-    setLocation(row, column){//this is probably unnecessary since we can just set the row and column variables but we will see
+
+    /**
+     * stores the row and column of the piece so it can be referenced in future algorithms
+     * @function setLocation
+     * @memberof GamePiece
+     * @param row new value of this.row
+     * @param column new value of this.column
+     */
+    setLocation(row, column){
         this.row = row;
         this.column = column;
     }
+
+    /**
+     * method that runs when a piece is clicked, figures out what buttons to add the move script to
+     * @function enableValidMovements
+     * @memberof GamePiece
+     * @param GameBoardClass GameBoard Object so we can use the GameButton and GameBoard arrays
+     */
     enableValidMovements(GameBoardClass){//This method will eventually be removed, but is a template for future methods
         for(var i = 0; i<8; i++){//for every piece in GameBoard
             for(var j = 0; j<8; j++){
@@ -23,6 +37,14 @@ class GamePiece {
             }
         }
     }
+
+    /**
+     * adds the movement script to the given piece
+     * @function setMoveFunction
+     * @memberof GamePiece
+     * @param GameBoardClass GameBoard Object so we can use the GameButton and GameBoard arrays
+     * @param destinationPiece piece we want to move to
+     */
     setMoveFunction(GameBoardClass,destinationPiece){//this will be used by every pieces enableValidMovements methods
         var destinationButton = GameBoardClass.GameButtons[destinationPiece.row][destinationPiece.column]
         destinationButton.disabled = false;
@@ -45,6 +67,11 @@ class Pawn extends GamePiece{
         this.pieceType = 'pawn';
     }
 
+    /**
+     * returns the image of the piece depending on its color
+     * @function getImage
+     * @memberof Pawn
+     */
     getImage(){
         if(this.color == 'white'){
             return './img/pawn_white.svg';
@@ -61,6 +88,11 @@ class Knight extends GamePiece{
         this.pieceType = 'knight';
     }
 
+    /**
+     * returns the image of the piece depending on its color
+     * @function getImage
+     * @memberof Knight
+     */
     getImage(){
         if(this.color == 'white'){
             return './img/knight_white.svg';
@@ -77,6 +109,11 @@ class Rook extends GamePiece{
         this.pieceType = 'rook';
     }
 
+    /**
+     * returns the image of the piece depending on its color
+     * @function getImage
+     * @memberof Rook
+     */
     getImage(){
         if(this.color == 'white'){
             return './img/rook_white.svg';
@@ -93,6 +130,11 @@ class Bishop extends GamePiece{
         this.pieceType = 'bishop';
     }
 
+    /**
+     * returns the image of the piece depending on its color
+     * @function getImage
+     * @memberof Bishop
+     */
     getImage(){
         if(this.color == 'white'){
             return './img/bishop_white.svg';
@@ -109,6 +151,11 @@ class Queen extends GamePiece{
         this.pieceType = 'queen';
     }
 
+    /**
+     * returns the image of the piece depending on its color
+     * @function getImage
+     * @memberof Queen
+     */
     getImage(){
         if(this.color == 'white'){
             return './img/queen_white.svg';
@@ -125,6 +172,11 @@ class King extends GamePiece{
         this.pieceType = 'king';
     }
 
+    /**
+     * returns the image of the piece depending on its color
+     * @function getImage
+     * @memberof King
+     */
     getImage(){
         if(this.color == 'white'){
             return './img/king_white.svg';
@@ -141,6 +193,11 @@ class NullPiece extends GamePiece{
         this.pieceType = 'null';
     }
 
+    /**
+     * returns no image because it is not a chess piece
+     * @function getImage
+     * @memberof NullPiece
+     */
     getImage(){
         return '';//This might change later, we will see what I want this to be
     }
